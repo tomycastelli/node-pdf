@@ -1,0 +1,121 @@
+<style>
+  .header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .pageTitle {
+    font-size: 1.875rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
+
+  .clientName {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .section {
+    margin-bottom: 1rem;
+  }
+
+  .sectionTitle {
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-left: 2rem;
+  }
+
+  .table-container {
+    margin-left: 2rem;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 0.5rem;
+    text-align: right;
+  }
+
+  .table th {
+    background-color: #ccc;
+  }
+
+  .table tr:nth-child(even) {
+    background-color: #ddd;
+  }
+
+  .table tr:nth-child(odd) {
+    background-color: #fff;
+  }
+
+  .totalBalance {
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-align: right;
+    margin-top: 1rem;
+    margin-right: 2rem;
+  }
+
+  .pageBreak {
+    page-break-before: always;
+  }
+</style>
+
+<section class="header">
+  <h1 class="pageTitle">Maika</h1>
+  <h1 class="clientName">Cliente: <span><%= cliente %></span></h1>
+</section>
+<% for (let i = 0; i < cuentas.length; i++) { %>
+  <div class="section">
+    <h2 class="sectionTitle"><%= cuentas[i].divisa %></h2>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Detalle</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Saldo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let j = 0; j < cuentas[i].movimientos.length; j++) { %>
+            <tr>
+              <td><%= cuentas[i].movimientos[j].fecha %></td>
+              <td>
+                <%= cuentas[i].movimientos[j].detalle %> de <%= cuentas[i].movimientos[j].operacion_tipo %> Nro <%= cuentas[i].movimientos[j].cuenta_id %>
+              </td>
+              <td>
+                <% if (cuentas[i].movimientos[j].entrada != 0) { %>
+                  $<%= cuentas[i].movimientos[j].entrada %>
+                <% } %>
+              </td>
+              <td>
+                <% if (cuentas[i].movimientos[j].salida != 0) { %>
+                  $<%= cuentas[i].movimientos[j].salida %>
+                <% } %>
+              </td>
+              <td>$<%= cuentas[i].movimientos[j].saldo %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <div class="totalBalance">
+      Saldo final:
+      <span><%= cuentas[i].saldo %></span>
+    </div>
+  </div>
+  <% if (i < cuentas.length - 1) { %>
+    <div class="pageBreak"></div>
+  <% } %>
+<% } %>
+</section>
