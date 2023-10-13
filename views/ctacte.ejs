@@ -70,11 +70,11 @@
 
 <section class="header">
   <h1 class="pageTitle">Maika</h1>
-  <h1 class="clientName">Cliente: <span><%= cliente %></span></h1>
+  <h1 class="clientName">Cliente: <span><%= data.cliente %></span></h1>
 </section>
-<% for (let i = 0; i < cuentas.length; i++) { %>
+<% for (let i = 0; i < data.cuentas.length; i++) { %>
   <div class="section">
-    <h2 class="sectionTitle"><%= cuentas[i].divisa %></h2>
+    <h2 class="sectionTitle"><%= data.cuentas[i].divisa %></h2>
     <div class="table-container">
       <table class="table">
         <thead>
@@ -87,23 +87,23 @@
           </tr>
         </thead>
         <tbody>
-          <% for (let j = 0; j < cuentas[i].movimientos.length; j++) { %>
+          <% for (let j = 0; j < data.cuentas[i].movimientos.length; j++) { %>
             <tr>
-              <td><%= cuentas[i].movimientos[j].fecha %></td>
+              <td><%= data.cuentas[i].movimientos[j].fecha %></td>
               <td>
-                <%= cuentas[i].movimientos[j].detalle %> de <%= cuentas[i].movimientos[j].operacion_tipo %> Nro <%= cuentas[i].movimientos[j].cuenta_id %>
+                <%= data.cuentas[i].movimientos[j].detalle %> de <%= data.cuentas[i].movimientos[j].operacion_tipo %> Nro <%= data.cuentas[i].movimientos[j].cuenta_id %>
               </td>
               <td>
-                <% if (cuentas[i].movimientos[j].entrada != 0) { %>
-                  $<%= cuentas[i].movimientos[j].entrada %>
+                <% if (data.cuentas[i].movimientos[j].entrada != 0) { %>
+                  $<%= formatNumber(data.cuentas[i].movimientos[j].entrada) %>
                 <% } %>
               </td>
               <td>
-                <% if (cuentas[i].movimientos[j].salida != 0) { %>
-                  $<%= cuentas[i].movimientos[j].salida %>
+                <% if (data.cuentas[i].movimientos[j].salida != 0) { %>
+                  $<%= formatNumber(data.cuentas[i].movimientos[j].salida) %>
                 <% } %>
               </td>
-              <td>$<%= cuentas[i].movimientos[j].saldo %></td>
+              <td>$<%= formatNumber(data.cuentas[i].movimientos[j].saldo) %></td>
             </tr>
           <% } %>
         </tbody>
@@ -111,10 +111,10 @@
     </div>
     <div class="totalBalance">
       Saldo final:
-      <span><%= cuentas[i].saldo %></span>
+      <span><%= formatNumber(data.cuentas[i].saldo) %></span>
     </div>
   </div>
-  <% if (i < cuentas.length - 1) { %>
+  <% if (i < data.cuentas.length - 1) { %>
     <div class="pageBreak"></div>
   <% } %>
 <% } %>
