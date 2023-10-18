@@ -1,35 +1,31 @@
-const express = require('express');
-const path = require('path');
-const mysql = require('mysql2');
-require('dotenv').config();
+const express = require('express')
+const path = require('path')
+const mysql = require('mysql2')
+require('dotenv').config()
 
-const app = express();
-const port = 3001;
+const app = express()
+const port = 3001
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+	console.log(`Server is running on http://localhost:${port}`)
+})
 
-const connection = mysql.createConnection(process.env.DATABASE_URL);
+const connection = mysql.createConnection(process.env.DATABASE_URL)
 
 if (connection) {
-  console.log('Connected to Maika DB successfully!');
+	console.log('Connected to Maika DB successfully!')
 }
 
-const queryDir = path.join(__dirname, 'queries');
-const templatesPath = path.join(__dirname, 'views');
-const pdfsPath = path.join(__dirname, 'pdfs');
+const queryDir = path.join(__dirname, 'queries')
+const templatesPath = path.join(__dirname, 'views')
+const filesPath = path.join(__dirname, 'files')
 
-
-const generatePdfRouter = require('./routes/generatePdf')(queryDir, templatesPath, pdfsPath, connection)
-const getPdfRouter = require('./routes/getPdf')(pdfsPath)
+const generateReportRouter = require('./routes/generateReport')(queryDir, templatesPath, filesPath, connection)
 
 // Use the routes
-app.use('/generate-pdf', generatePdfRouter)
-app.use('/get-pdf', getPdfRouter)
-
+app.use('/generate-report', generateReportRouter)
 
 // Error handling
 app.use((err, req, res, next) => {
-  console.error(err); // Log the error for debugging purposes
-});
+	console.error(err) // Log the error for debugging purposes
+})

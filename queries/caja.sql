@@ -27,5 +27,3 @@ JOIN
     operaciones o ON t.operacion_id = o.id
 JOIN 
     clientes c1 ON o.cliente_id = c1.id
-WHERE 
-    c.tipo = 'caja' AND t.divisa = ?;

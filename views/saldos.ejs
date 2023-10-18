@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Client Data</h1>
+
+    <table>
+        <tr>
+            <th>Cliente</th>
+            <th>USD</th>
+            <th>USDT</th>
+            <th>ARS</th>
+            <th>EUR</th>
+            <th>BRL</th>
+        </tr>
+        <% for(var i=0; i < data.length; i++) { %>
+            <tr>
+                <td>
+                    <%= data[i].cliente %>
+                </td>
+                <td>
+                    <%= formatNumber(data[i].usd) %>
+                </td>
+                <td>
+                    <%= formatNumber(data[i].usdt) %>
+                </td>
+                <td>
+                    <%= formatNumber(data[i].ars) %>
+                </td>
+                <td>
+                    <%= formatNumber(data[i].eur) %>
+                </td>
+                <td>
+                    <%= formatNumber(data[i].brl) %>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+
+</body>
+
+</html>
