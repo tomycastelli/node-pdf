@@ -5,7 +5,7 @@ const { getFiles, getFileDownload } = require('./s3')
 require('dotenv').config()
 
 const app = express()
-const port = 3001
+const port = 3002
 
 app.listen(port, () => {
 	console.log(`Server is running on http://localhost:${port}`)
