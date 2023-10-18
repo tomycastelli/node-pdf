@@ -17,15 +17,15 @@ async function generatePDF(
 	res
 ) {
 	return new Promise(async (resolve, reject) => {
-		function formatNumber(number) {
+		function formatNumbers(number) {
 			if (number !== undefined && number !== null) {
-				return parseFloat(number).toLocaleString('es-AR', {
+				const formatter = new Intl.NumberFormat('es-AR', {
 					minimumFractionDigits: 2,
 					maximumFractionDigits: 2,
 				})
-			} else {
-				return ''
+				return formatter.format(parseFloat(number))
 			}
+			return ''
 		}
 
 		const templatePath = path.join(templatesPath, `${type}.ejs`)
