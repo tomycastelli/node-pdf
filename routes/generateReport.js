@@ -1,8 +1,9 @@
 const express = require('express')
 const fs = require('fs')
 const path = require('path')
-const { transformCuenta, transformCaja, addCambioToObjects } = require('../functions/dataUtils') // Import the function
+const { transformCuenta, transformCaja, addCambioToObjects } = require('../functions/dataUtils')
 const { generatePDF, generateCSV } = require('../functions/generators')
+const { uploadFile } = require('../s3')
 
 const router = express.Router()
 
@@ -57,7 +58,7 @@ module.exports = (queryDir, templatesPath, filesPath, connection) => {
 				query += condition
 			}
 
-			connection.query(query, params, (error, results) => {
+			connection.query(query, params, async (error, results) => {
 				if (error) {
 					return res.status(500).json({ error: 'Database query error.' })
 				}
@@ -71,7 +72,6 @@ module.exports = (queryDir, templatesPath, filesPath, connection) => {
 
 					let transformedData
 
-					// Apply the organizeData function to jsonData
 					if (type == 'ctacte') {
 						transformedData = transformCuenta(jsonData)
 					} else if (type == 'caja') {
@@ -90,10 +90,35 @@ module.exports = (queryDir, templatesPath, filesPath, connection) => {
 							}
 						})
 					}
+
+					let response
+
 					if (fileType == 'pdf') {
-						generatePDF(templatesPath, filesPath, transformedData, type, cliente, divisa, desdeFecha, hastaFecha, res)
+						response = await generatePDF(
+							templatesPath,
+							filesPath,
+							transformedData,
+							type,
+							cliente,
+							divisa,
+							desdeFecha,
+							hastaFecha,
+							res
+						)
+
+						if (JSON.stringify(response) !== '{}') {
+							const result = await uploadFile(response.filepath, response.filename)
+							console.log(result)
+							res.status(200).json(result)
+						}
 					} else if (fileType == 'csv') {
-						generateCSV(filesPath, jsonData, type, cliente, divisa, desdeFecha, hastaFecha, res)
+						response = generateCSV(filesPath, jsonData, type, cliente, divisa, desdeFecha, hastaFecha, res)
+						console.log(response)
+						if (JSON.stringify(response) !== '{}') {
+							const result = await uploadFile(response.filepath, response.filename)
+							console.log(result)
+							res.status(200).json(result)
+						}
 					}
 				}
 			})
