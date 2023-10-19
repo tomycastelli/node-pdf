@@ -17,7 +17,7 @@ async function generatePDF(
 	res
 ) {
 	return new Promise(async (resolve, reject) => {
-		function formatNumbers(number) {
+		function formatNumber(number) {
 			if (number !== undefined && number !== null) {
 				const formatter = new Intl.NumberFormat('es-AR', {
 					minimumFractionDigits: 2,
