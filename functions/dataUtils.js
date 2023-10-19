@@ -62,9 +62,9 @@ function transformCuenta(inputArray) {
 			operacion_operador,
 			detalle,
 			observaciones,
-			entrada: parsedEntrada.toLocaleString('es-AR'),
-			salida: parsedSalida.toLocaleString('es-AR'),
-			saldo: parseFloat(currencies[transaccion_divisa].saldo.toFixed(2)).toLocaleString('es-AR'), // Include saldo in movimiento
+			entrada: parsedEntrada,
+			salida: parsedSalida,
+			saldo: parseFloat(currencies[transaccion_divisa].saldo.toFixed(2)), // Include saldo in movimiento
 		})
 	})
 
@@ -73,7 +73,7 @@ function transformCuenta(inputArray) {
 
 	// Round the saldo at the top level (outside the forEach loop)
 	result.cuentas.forEach(currency => {
-		currency.saldo = parseFloat(currency.saldo).toFixed(2).toLocaleString('es-AR')
+		currency.saldo = parseFloat(currency.saldo).toFixed(2)
 	})
 
 	return result
