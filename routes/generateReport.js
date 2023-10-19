@@ -56,7 +56,7 @@ module.exports = (queryDir, templatesPath, filesPath, connection) => {
 				params.push(divisa)
 				query += condition
 			} else if (type == 'ctacte') {
-				condition = ` WHERE c.tipo = 'cuenta corriente' AND c1.nombre = ?;`
+				condition = ` WHERE c.tipo = 'cuenta corriente' AND c1.id = ?;`
 				params.push(cliente)
 				query += condition
 			}
