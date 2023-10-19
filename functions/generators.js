@@ -70,19 +70,19 @@ async function generatePDF(
 			let pdfFilename = `${formattedDate}_${type}`
 			if (type === 'movimientos') {
 				if (desdeFecha && hastaFecha) {
-					pdfFilename += `_desde${desdeFecha}_hasta${hastaFecha}.pdf`
+					pdfFilename += `_desde${desdeFecha}_hasta${hastaFecha}`
 				} else if (desdeFecha) {
-					pdfFilename += `_desde${desdeFecha}.pdf`
+					pdfFilename += `_desde${desdeFecha}`
 				} else if (hastaFecha) {
-					pdfFilename += `_hasta${hastaFecha}.pdf`
+					pdfFilename += `_hasta${hastaFecha}`
 				}
 			} else if (type === 'caja') {
-				pdfFilename += `_${divisa}.pdf`
+				pdfFilename += `_${divisa}`
 			} else if (type === 'ctacte') {
-				pdfFilename += `_${cliente}.pdf`
+				pdfFilename += `_${cliente}`
 			}
 
-			const pdfPath = path.join(filesPath, 'pdfs', pdfFilename)
+			const pdfPath = path.join(filesPath, 'pdfs', (pdfFilename += '.pdf'))
 			fs.writeFileSync(pdfPath, compressedPdfBuffer)
 
 			console.log(`${pdfPath} has been saved`)
