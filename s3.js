@@ -31,7 +31,7 @@ async function uploadFile(filepath, filename) {
 	const getCommand = new GetObjectCommand(downloadParams)
 	const downloadUrl = await getSignedUrl(client, getCommand, { expiresIn: 300 })
 
-	return { putResult, downloadUrl }
+	return { putResult, downloadUrl, key: `${filename}` }
 }
 
 async function getFiles() {
