@@ -7,6 +7,9 @@ const { uploadFile } = require('../s3')
 
 const router = express.Router()
 
+// Assuming you have an object to store the cache
+const reportCache = {}
+
 module.exports = (queryDir, templatesPath, filesPath, connection) => {
 	router.post('/', async (req, res) => {
 		const { fileType, type, cliente, divisa, desdeFecha, hastaFecha } = req.query
@@ -65,6 +68,19 @@ module.exports = (queryDir, templatesPath, filesPath, connection) => {
 
 				const jsonData = results
 
+				// Caching logic
+				const currentTimestamp = new Date().getTime()
+
+				// Check if the report of the same type has been generated in the last 10 minutes
+				if (
+					(type === 'caja' &&
+						reportCache[`${type}_${divisa}`] &&
+						currentTimestamp - reportCache[`${type}_${divisa}`] < 600000) ||
+					(!['caja', 'ctacte'].includes(type) && reportCache[type] && currentTimestamp - reportCache[type] < 600000)
+				) {
+					return res.status(429).json({ error: 'Report recently generated. Please try again later.' })
+				}
+
 				if (jsonData.length == 0) {
 					return res.status(500).json({ error: 'The query returned no rows' })
 				} else if (jsonData.length > 0) {
@@ -119,6 +135,13 @@ module.exports = (queryDir, templatesPath, filesPath, connection) => {
 							console.log(result)
 							res.status(200).json(result)
 						}
+					}
+
+					// Store the timestamp in the cache after generating the report
+					if (type === 'caja') {
+						reportCache[`${type}_${divisa}`] = currentTimestamp
+					} else {
+						reportCache[type] = currentTimestamp
 					}
 				}
 			})
