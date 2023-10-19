@@ -116,19 +116,19 @@ const generateCSV = (filesPath, jsonData, type, cliente, divisa, desdeFecha, has
 
 	if (type === 'movimientos') {
 		if (desdeFecha && hastaFecha) {
-			csvFilename += `_desde${desdeFecha}_hasta${hastaFecha}.csv`
+			csvFilename += `_desde${desdeFecha}_hasta${hastaFecha}`
 		} else if (desdeFecha) {
-			csvFilename += `_desde${desdeFecha}.csv`
+			csvFilename += `_desde${desdeFecha}`
 		} else if (hastaFecha) {
-			csvFilename += `_hasta${hastaFecha}.csv`
+			csvFilename += `_hasta${hastaFecha}`
 		}
 	} else if (type === 'caja') {
-		csvFilename += `_${divisa}.csv`
+		csvFilename += `_${divisa}`
 	} else if (type === 'ctacte') {
-		csvFilename += `_${cliente}.csv`
+		csvFilename += `_${cliente}`
 	}
 
-	const csvPath = path.join(filesPath, 'csvs', csvFilename)
+	const csvPath = path.join(filesPath, 'csvs', (csvFilename += '.csv'))
 
 	fs.writeFileSync(csvPath, csv) // Using synchronous writeFile for simplicity
 
