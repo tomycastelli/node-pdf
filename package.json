@@ -18,6 +18,6 @@
     "ghostscript-node": "1.5.0",
     "json2csv": "^6.0.0-alpha.2",
     "mysql2": "3.6.1",
-    "puppeteer": "21.3.8"
+    "puppeteer": "^22.12.1"
   }
 }

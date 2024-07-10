@@ -1,47 +1,27 @@
-FROM --platform=linux/amd64 node:slim
+FROM node:20-alpine
 
-# Update the package list and install the necessary dependencies
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-  fonts-liberation \
-  libgtk-3-0 \
-  libwayland-client0 \
-  xdg-utils \
-  libu2f-udev \
-  libvulkan1 \
-  libnss3 \
-  libnspr4 \
-  libatk1.0-0 \
-  libatk-bridge2.0-0 \
-  libcups2 \
-  libdrm2 \
-  libxkbcommon0 \
-  libxcomposite1 \
-  libxdamage1 \
-  libxfixes3 \
-  libxrandr2 \
-  libgbm1 \
-  libasound2 \
-  python3 \
-  build-essential \
-  ghostscript \
-  libjpeg-dev \
-  libpng-dev \
-  libcurl4-openssl-dev \
-  mupdf-tools \
-  libfreetype6-dev \
-  qpdf \
-  && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache \
+    udev \
+    ttf-freefont \
+    chromium
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
+ENV NODE_TLS_REJECT_UNAUTHORIZED 0
 
 WORKDIR /app
 
 COPY package*.json ./
-
-# Install Node.js dependencies
 RUN npm install
 
 COPY . .
 
+ENV DATABASE_URL default1
+ENV AWS_BUCKET_NAME default2
+ENV AWS_BUCKET_REGION default3
+ENV AWS_PUBLIC_KEY default4
+ENV AWS_SECRET_KEY default5
+
 EXPOSE 3001
 
-CMD [ "npm", "start" ]
+ENTRYPOINT ["node", "index.js"]
